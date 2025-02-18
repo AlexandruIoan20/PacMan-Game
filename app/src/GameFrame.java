@@ -10,8 +10,9 @@ public class GameFrame extends JFrame {
         GamePanel gamePanel = new GamePanel(filePath);
 
         this.add(gamePanel);
-        this.setSize(950, 950);
+        this.setSize(570, 570);
         this.getContentPane().setBackground(Color.BLACK);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 }

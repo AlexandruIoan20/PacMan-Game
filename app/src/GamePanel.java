@@ -11,12 +11,13 @@ import game_constants.Constants;
 public class GamePanel extends JPanel {
     private final String filePath;
     private final int N = Constants.N.getValue();
-    int game_matrix[][] = new int[N][N];
+    Block game_matrix[][] = new Block[N][N];
 
     GamePanel(String filePath) {
         this.filePath = filePath;
         this.setBackground(Color.BLACK);
         this.setOpaque(true);
+        this.setLayout(new GridLayout(N, N));
 
         this.loadLevel();
         this.showGame();
@@ -35,7 +36,8 @@ public class GamePanel extends JPanel {
                 char c = (char) character;
 
                 if(Character.getNumericValue(c) != -1) {
-                    game_matrix[line_counter][e_counter] = Character.getNumericValue(c);
+                    game_matrix[line_counter][e_counter] = new Block(Character.getNumericValue(c));
+                    this.add(game_matrix[line_counter][e_counter]);
 
                     e_counter++;
                     if (e_counter == N) {
@@ -56,7 +58,7 @@ public class GamePanel extends JPanel {
     private void showGame() {
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
-                System.out.print(game_matrix[i][j] + " ");
+                System.out.print(game_matrix[i][j].getBlockValue() + " ");
             }
             System.out.println();
         }
