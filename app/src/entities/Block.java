@@ -1,3 +1,5 @@
+package entities;
+
 import game_constants.Constants;
 
 import javax.swing.*;
@@ -7,7 +9,7 @@ public class Block extends JLabel {
     private int blockValue;
     private final int N = Constants.N.getValue();
 
-    Block (int blockValue) {
+    public Block (int blockValue) {
         this.blockValue = blockValue;
 
         this.setPreferredSize(new Dimension(N, N));
@@ -17,11 +19,11 @@ public class Block extends JLabel {
         this.showBlock(this.blockValue);
     }
 
-    int getBlockValue() {
+    public int getBlockValue() {
         return this.blockValue;
     }
 
-    void setBlockValue(int blockValue) {
+    public void setBlockValue(int blockValue) {
         this.blockValue = blockValue;
     }
 

@@ -1,17 +1,24 @@
+import entities.Block;
+import entities.Enemy;
+import entities.Player;
 import game_constants.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import game_constants.Constants;
 
-public class GamePanel extends JPanel {
+import entities.Block;
+
+public class GamePanel extends JPanel implements KeyListener {
     private final String filePath;
     private final int N = Constants.N.getValue();
     Block game_matrix[][] = new Block[N][N];
+    Player player;
 
     GamePanel(String filePath) {
         this.filePath = filePath;
@@ -21,6 +28,12 @@ public class GamePanel extends JPanel {
 
         this.loadLevel();
         this.showGame();
+
+        this.setFocusable(true);
+        this.addKeyListener(this);
+
+        // Request focus after the panel is visible
+        SwingUtilities.invokeLater(this::requestFocusInWindow);
     }
 
     private void loadLevel() {
@@ -35,8 +48,14 @@ public class GamePanel extends JPanel {
                 // Convert from read int to real int
                 char c = (char) character;
 
-                if(Character.getNumericValue(c) != -1) {
-                    game_matrix[line_counter][e_counter] = new Block(Character.getNumericValue(c));
+                int value = Character.getNumericValue(c);
+                if(value != -1) {
+                    if(value == Constants.PLAYER_VALUE.getValue()) {
+                        game_matrix[line_counter][e_counter] = new Player(value, line_counter, e_counter);
+                        player = new Player(value, line_counter, e_counter);
+                    }
+                    else if(value == Constants.ENEMY_VALUE.getValue()) game_matrix[line_counter][e_counter] = new Enemy(value);
+                    else game_matrix[line_counter][e_counter] = new Block(Character.getNumericValue(c));
                     this.add(game_matrix[line_counter][e_counter]);
 
                     e_counter++;
@@ -62,5 +81,22 @@ public class GamePanel extends JPanel {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        player.move();
+        System.out.println(player.getPlayerI());
+        System.out.println(player.getPlayerJ());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
